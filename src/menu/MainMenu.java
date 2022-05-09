@@ -1,5 +1,6 @@
 package menu;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -14,7 +15,7 @@ public class MainMenu {
         System.out.println("*                                 *");
         System.out.println("* * * * * * * * * * * * * * * * * *");
     }
-    public static void selectMainMenu() {
+    public static void selectMainMenu() throws IOException {
         getMainMenu();
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nSeclection action: ");
@@ -25,10 +26,10 @@ public class MainMenu {
                 CallCenterMenu.selectCallCenter();
                 break;
             case 2:
-                MessegeCenterMenu.selectMessageCenter();
+                MessageCenterMenu.selectMessageCenter();
                 break;
             case 3:
-                BrowserCenterMenu.selectBrowserCenter();
+                InternetCenterMenu.selectInternetCenter();
                 break;
             case 0:
                 System.exit(0);

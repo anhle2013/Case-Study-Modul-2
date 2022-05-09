@@ -1,5 +1,8 @@
 package menu;
 
+import action.phone.*;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CallCenterMenu {
@@ -9,12 +12,12 @@ public class CallCenterMenu {
         System.out.println("*                                   *");
         System.out.println("*     1. Deposit main account       *");
         System.out.println("*     2. Check SIM status menu      *");
-        System.out.println("*     3. Performance a call         *");
+        System.out.println("*     3. Dial a call                *");
         System.out.println("*     0. Return                     *");
         System.out.println("*                                   *");
         System.out.println("* * * * * * * * * * * * * * * * * * *");
     }
-    public static void selectCallCenter() {
+    public static void selectCallCenter() throws IOException {
         getCallCenter();
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nSeclection action: ");
@@ -22,13 +25,13 @@ public class CallCenterMenu {
         int number = Integer.parseInt(scanner.nextLine());
         switch (number) {
             case 1:
-                call.action.DepositMainAccount.run();
+                DepositMainAccount.run();
                 break;
             case 2:
                 selectSIMStatusMenu();
                 break;
             case 3:
-                call.action.PerformanceACall.run();
+                Call.run();
                 break;
             case 0:
                 menu.MainMenu.selectMainMenu();
@@ -51,7 +54,7 @@ public class CallCenterMenu {
         System.out.println("*                                       *");
         System.out.println("* * * * * * * * * * * * * * * * * * * * *");
     }
-    public static void selectSIMStatusMenu() {
+    public static void selectSIMStatusMenu() throws IOException {
         checkSIMStatusMenu();
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nSeclection action: ");
@@ -59,13 +62,13 @@ public class CallCenterMenu {
         int number = Integer.parseInt(scanner.nextLine());
         switch (number) {
             case 1:
-                call.action.MainAccount.run();
+                MainAccount.run();
                 break;
             case 2:
-                call.action.PromotionAccount.run();
+                PromotionAccount.run();
                 break;
             case 3:
-                call.action.AvailablePackage.run();
+                AvailablePackage.run();
                 break;
             case 0:
                 menu.CallCenterMenu.selectCallCenter();
