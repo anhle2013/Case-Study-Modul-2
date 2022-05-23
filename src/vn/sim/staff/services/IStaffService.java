@@ -12,8 +12,9 @@ public interface IStaffService {
     List<SimUser> findUsers(String key);
     void addUser(SimUser user);
     SimUser getUser(String personId);
+    SimUser getUserByPhoneNumber(String phoneNumber);
     void reActiveSim(String personId);
-    void changeSim(String personId, String newSeri);
+    void changeSim(String personId, String newSerial);
     void depositSimAccount(String personId, int money);
     int getIndex(String personId);
 }

@@ -1,7 +1,6 @@
 package vn.sim.modals;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class SerialAvailble {
     private HashMap<String,SimSerialStatus> simList;

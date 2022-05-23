@@ -1,5 +1,7 @@
 package vn.sim.modals;
 
+import java.util.ArrayList;
+
 public class SimUser {
     private String serial;
     private String phoneNumber;
@@ -7,10 +9,14 @@ public class SimUser {
     private String personId;
     private String name;
     private int mainAccount = 1000;
+    private int countWrongCodeInput;
     private PromotionAccount promotionAccount;
     private String email;
     private Role role;
     private SimStatus simStatus;
+    private ArrayList<Message> drafts = new ArrayList<>();
+    private ArrayList<Message> inbox = new ArrayList<>();
+    private ArrayList<Message> sendbox = new ArrayList<>();
 
     public SimUser(String serial, String phoneNumber, String password) {
         this.serial = serial;
@@ -79,6 +85,14 @@ public class SimUser {
         this.mainAccount = mainAccount;
     }
 
+    public int getCountWrongCodeInput() {
+        return countWrongCodeInput;
+    }
+
+    public void setCountWrongCodeInput(int countWrongCodeInput) {
+        this.countWrongCodeInput = countWrongCodeInput;
+    }
+
     public PromotionAccount getPromotionAccount() {
         return promotionAccount;
     }
@@ -110,4 +124,29 @@ public class SimUser {
     public void setStatus(SimStatus simStatus) {
         this.simStatus = simStatus;
     }
+
+    public ArrayList<Message> getDrafts() {
+        return drafts;
+    }
+
+    public ArrayList<Message> getInbox() {
+        return inbox;
+    }
+
+    public ArrayList<Message> getSendbox() {
+        return sendbox;
+    }
+
+    public void addDrafts(Message message) {
+        drafts.add(message);
+    }
+
+    public void addInbox(Message message) {
+        inbox.add(message);
+    }
+
+    public void addSendbox(Message message) {
+        sendbox.add(message);
+    }
+
 }

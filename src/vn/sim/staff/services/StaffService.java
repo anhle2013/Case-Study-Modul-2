@@ -12,9 +12,6 @@ public class StaffService implements IStaffService {
     //List<SimUser> simListDisable;
     public StaffService() {}
     static {
-
-        //this.simListDisable = new ArrayList<>();
-
         userList.add(new SimUser("190.570.568.680","0968686868","abc123!",
                 "192564542", "Phan Nhat", "nhatphan99@gmail.com"));
         userList.add(new SimUser("190.570.668.680","0988888888","abc123!",
@@ -82,13 +79,20 @@ public class StaffService implements IStaffService {
     @Override
     public void addUser(SimUser user) {
         userList.add(user);
-        System.out.println(userList.size());
     }
 
     @Override
     public SimUser getUser(String personId) {
         for (SimUser user: userList)
             if (user.getPersonId().equals(personId))
+                return user;
+        return null;
+    }
+
+    @Override
+    public SimUser getUserByPhoneNumber(String phoneNumber) {
+        for (SimUser user: userList)
+            if (user.getPhoneNumber().equals(phoneNumber))
                 return user;
         return null;
     }
