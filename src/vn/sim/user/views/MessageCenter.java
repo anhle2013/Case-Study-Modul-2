@@ -24,7 +24,7 @@ public class MessageCenter {
                 System.out.println("* * * * * --- MESSAGE CENTER --- * * * * *");
                 System.out.println("*                                        *");
                 System.out.println("*     1. Creat new message               *");
-                System.out.println("*     2. Dafts                           *");
+                System.out.println("*     2. Drafts                          *");
                 System.out.println("*     3. Inbox                           *");
                 System.out.println("*     4. Sendbox                         *");
                 System.out.println("*                                        *");

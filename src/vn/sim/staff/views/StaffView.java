@@ -32,7 +32,7 @@ public class StaffView {
                     break;
                 case "3":
                     CardManagement cardManagement = new CardManagement();
-                    cardManagement.getCardManagentMenu();
+                    cardManagement.getCardManagementMenu();
                     break;
                 case "8":
                     return;

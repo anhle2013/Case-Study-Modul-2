@@ -1,7 +1,7 @@
 package vn.sim.staff.views;
 
 public class CardManagement {
-    public void getCardManagentMenu() {
-        System.out.println("Card Managent Menu");
+    public void getCardManagementMenu() {
+        System.out.println("Card Management Menu");
     }
 }

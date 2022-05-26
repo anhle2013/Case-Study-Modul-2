@@ -1,32 +1,40 @@
 package vn.sim;
 
+import vn.sim.modals.SimUser;
 import vn.sim.modals.Staff;
 import vn.sim.staff.services.StaffService;
 import vn.sim.staff.views.StaffView;
 import vn.sim.user.views.UserView;
 
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class LoginView {
-    Scanner scanner = new Scanner(System.in);
-    StaffService staffService = new StaffService();
-    Staff staff = new Staff();
 
     public void login() throws IOException {
-        System.out.println("* * * * * * * * * * --- LOGIN --- * * * * * * * * * *");
-        System.out.println("Note: If you're sim user, User = Phone number!");
+        Scanner scanner = new Scanner(System.in);
+        StaffService staffService = new StaffService();
+        staffService.getAll();
+        Staff staff = new Staff();
+        String user, password;
         do {
+            System.out.println("* * * * * * * * * * --- LOGIN --- * * * * * * * * * *");
+            System.out.println("Note: If you're sim user, User = Phone number!");
+            System.out.println("Enter 'out' to exit");
+            System.out.println();
             System.out.print("Enter user: ");
-            String user = scanner.nextLine();
+            user = scanner.nextLine();
+            if (user.equals("out"))
+                System.exit(0);
             System.out.print("Enter password: ");
-            String password = scanner.nextLine();
+            password = scanner.nextLine();
+            if (password.equals("out"))
+                System.exit(0);
             if (staffService.userLogin(user, password) != null) {
                 System.out.println("Welcome " + user);
                 UserView userView = new UserView();
                 userView.getMainMenu(user);
-            }
-            else if (staff.staffLogin(user, password) != null) {
+            } else if (staff.staffLogin(user, password) != null) {
                 StaffView staffView = new StaffView();
                 staffView.getMainMenu();
             } else {

@@ -2,9 +2,13 @@ package vn.sim.staff.services;
 
 import vn.sim.modals.SimStatus;
 import vn.sim.modals.SimUser;
+import vn.sim.utils.CSVUtils;
+
+import java.util.List;
 
 public class UpdateUserService implements IUpdateUserService{
-
+    IStaffService staffService = new StaffService();
+    private final static String PATH = "data/users.csv";
 
     @Override
     public void changeSerial(SimUser user, String newSerial) {

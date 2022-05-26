@@ -1,13 +1,17 @@
 package vn.sim.utils;
 
 import vn.sim.modals.SimStatus;
+import vn.sim.modals.SimUser;
 import vn.sim.staff.services.StaffService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class AppUtils {
     static Scanner scanner = new Scanner(System.in);
     static StaffService staffService = new StaffService();
+    private final static String PATH = "data/users.csv";
+
     public static String inputString() {
         System.out.print(" ⭆ ");
         return scanner.nextLine();
@@ -41,6 +45,15 @@ public class AppUtils {
     }
 
     public static void setMainAccount(String phoneNumber, int newMainAccount) {
-        staffService.getUserByPhoneNumber(phoneNumber).setMainAccount(newMainAccount);
+        List<SimUser> userList = staffService.getAll();
+        int index = -1 ;
+        for (int i = 0; i < userList.size(); i++)
+            if (userList.get(i).getPhoneNumber().equals(phoneNumber))
+                index = i;
+        userList.get(index).setMainAccount(newMainAccount);
+        CSVUtils.write(PATH, userList);
+
     }
+
+
 }

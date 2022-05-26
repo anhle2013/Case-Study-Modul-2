@@ -1,5 +1,7 @@
 package vn.sim.user.views;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ICMPGE;
+import vn.sim.user.service.IInternetService;
 import vn.sim.user.service.InternetCenterService;
 import vn.sim.utils.AppUtils;
 
@@ -9,10 +11,10 @@ import java.util.Scanner;
 public class InternetCenter {
     Scanner scanner = new Scanner(System.in);
     String choice;
-    InternetCenterService internetCenterService = new InternetCenterService();
     final int PRICE_WATCH_PER_TIME = 5000;
     final int PRICE_SEARCH_PER_TIME = 200;
     final int PRICE_SURF_APPS_PER_SEC = 200;
+    IInternetService internetService = new InternetCenterService();
 
     public void getInternetCenter(String phoneNumber) throws IOException {
         if (AppUtils.simIsActive(phoneNumber)) {
@@ -136,6 +138,7 @@ public class InternetCenter {
                 break;
             }
         }
+        thread.interrupt();
         end = System.currentTimeMillis();
         sec = Math.round((end - start) / 1000F);
         System.out.println("Surfed: " + sec + " seconds");

@@ -3,36 +3,26 @@ package vn.sim.staff.services;
 import vn.sim.modals.Role;
 import vn.sim.modals.SimUser;
 import vn.sim.modals.SimStatus;
+import vn.sim.utils.CSVUtils;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class StaffService implements IStaffService {
-    static List<SimUser> userList = new ArrayList<>();
+
+    private final static String PATH = "data/users.csv";
+    public static List<SimUser> userList;
+
     //List<SimUser> simListDisable;
-    public StaffService() {}
-    static {
-        userList.add(new SimUser("190.570.568.680","0968686868","abc123!",
-                "192564542", "Phan Nhat", "nhatphan99@gmail.com"));
-        userList.add(new SimUser("190.570.668.680","0988888888","abc123!",
-                "201125454", "Nguyen Minh Tri", "tri.nguyen20@gmail.com"));
-        userList.add(new SimUser("190.570.768.680","0900000001","abc123!",
-                "202564876", "Phan Nhat Thanh", "nhatthanh.20@gmail.com"));
-        userList.add(new SimUser("190.570.868.680","0965432168","abc123!",
-                "043392564542", "Pham My Hanh", "hanhmy.199@gmail.com"));
-        userList.add(new SimUser("190.570.968.680","0987654321","abc123!",
-                "194564548", "Bui Minh Thanh", "minhthanh.220@gmail.com"));
-        userList.add(new SimUser("190.570.068.680","0965414617","abc123!",
-                "199864542", "Tran Thi Le", "tranle.2320@gmail.com"));
-        userList.add(new SimUser("190.570.168.680","0909876261","abc123!",
-                "040969256542", "Pham Nhat Vuong", "nhatv.1010@gmail.com.vn"));
-        userList.add(new SimUser("190.570.268.680","0902011922","abc123!",
-                "042192564542", "Le Nhat Nhat", "nhatnha.2000@gmail.com"));
+    public StaffService() {
     }
 
     @Override
     public boolean existSerial(String serial) {
-        for (SimUser user: userList)
+        userList = getAll();
+        for (SimUser user : userList)
             if (user.getSerial().equals(serial))
                 return true;
         return false;
@@ -40,7 +30,8 @@ public class StaffService implements IStaffService {
 
     @Override
     public boolean existPhoneNumber(String phoneNumber) {
-        for (SimUser user: userList)
+        userList = getAll();
+        for (SimUser user : userList)
             if (user.getPhoneNumber().equals(phoneNumber))
                 return true;
         return false;
@@ -48,7 +39,8 @@ public class StaffService implements IStaffService {
 
     @Override
     public boolean existPersonId(String personId) {
-        for (SimUser user: userList)
+        userList = getAll();
+        for (SimUser user : userList)
             if (user.getPersonId().equals(personId))
                 return true;
         return false;
@@ -56,21 +48,27 @@ public class StaffService implements IStaffService {
 
     @Override
     public boolean existEmail(String email) {
-        for (SimUser user: userList)
+        userList = getAll();
+        for (SimUser user : userList)
             if (user.getEmail().equals(email))
                 return true;
         return false;
     }
 
     @Override
-    public List<SimUser> findAll() {
+    public List<SimUser> getAll() {
+        userList = new ArrayList<>();
+        List<String> records = CSVUtils.read(PATH);
+        for (String record : records) {
+            userList.add(SimUser.parseUser(record));
+        }
         return userList;
     }
 
     @Override
     public List<SimUser> findUsers(String key) {
-        List<SimUser> users = new ArrayList<>();
-        for (SimUser user: userList)
+        List<SimUser> users = getAll();
+        for (SimUser user : users)
             if (user.getPhoneNumber().contains(key) || user.getPersonId().contains(key))
                 users.add(user);
         return users;
@@ -78,12 +76,15 @@ public class StaffService implements IStaffService {
 
     @Override
     public void addUser(SimUser user) {
+        userList = getAll();
         userList.add(user);
+        CSVUtils.write(PATH, userList);
     }
 
     @Override
     public SimUser getUser(String personId) {
-        for (SimUser user: userList)
+        userList = getAll();
+        for (SimUser user : userList)
             if (user.getPersonId().equals(personId))
                 return user;
         return null;
@@ -91,7 +92,8 @@ public class StaffService implements IStaffService {
 
     @Override
     public SimUser getUserByPhoneNumber(String phoneNumber) {
-        for (SimUser user: userList)
+        userList = getAll();
+        for (SimUser user : userList)
             if (user.getPhoneNumber().equals(phoneNumber))
                 return user;
         return null;
@@ -99,18 +101,21 @@ public class StaffService implements IStaffService {
 
     @Override
     public void reActiveSim(String personId) {
+        userList = getAll();
         int index = getIndex(personId);
         userList.get(index).setStatus(SimStatus.getEnum("ACTIVE"));
     }
 
     @Override
     public void changeSim(String personId, String newSerial) {
+        userList = getAll();
         int index = getIndex(personId);
         userList.get(index).setSerial(newSerial);
     }
 
     @Override
     public void depositSimAccount(String personId, int money) {
+        userList = getAll();
         int index = getIndex(personId);
         int mainAccount = userList.get(index).getMainAccount();
         userList.get(index).setMainAccount(mainAccount + money);
@@ -119,12 +124,15 @@ public class StaffService implements IStaffService {
 
     @Override
     public int getIndex(String personId) {
+        userList = getAll();
         for (int i = 0; i < userList.size(); i++)
             if (userList.get(i).getPersonId().equals(personId))
                 return i;
         return -1;
     }
+
     public String userLogin(String user, String password) {
+        userList = getAll();
         for (SimUser simUser : userList) {
             if (simUser.getPhoneNumber().equals(user) && simUser.getPassword().equals(password)
                     && simUser.getRole().equals(Role.SIM_USER)) {
@@ -132,6 +140,32 @@ public class StaffService implements IStaffService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void updateCSV(SimUser newUser) {
+        userList = getAll();
+        for (SimUser user : userList) {
+            if (user.getPhoneNumber().equals(newUser.getPhoneNumber())) {
+                String serial = newUser.getSerial();
+                if (serial != null)
+                    user.setSerial(serial);
+                String personId = newUser.getPersonId();
+                if (personId != null)
+                    user.setPersonId(personId);
+                String name = newUser.getName();
+                if (name != null)
+                    user.setName(name);
+                String email = newUser.getEmail();
+                if (email != null)
+                    user.setEmail(email);
+                SimStatus status = newUser.getStatus();
+                if (status != null)
+                    user.setStatus(status);
+                break;
+            }
+        }
+        CSVUtils.write(PATH, userList);
     }
 
 }

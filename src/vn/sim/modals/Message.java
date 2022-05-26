@@ -51,4 +51,6 @@ public class Message {
     public void setTime(Instant time) {
         this.time = time;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package vn.sim.modals;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class SimUser {
@@ -18,6 +19,7 @@ public class SimUser {
     private ArrayList<Message> inbox = new ArrayList<>();
     private ArrayList<Message> sendbox = new ArrayList<>();
 
+    public SimUser() {}
     public SimUser(String serial, String phoneNumber, String password) {
         this.serial = serial;
         this.phoneNumber = phoneNumber;
@@ -34,6 +36,14 @@ public class SimUser {
         this.personId = personId;
         this.name = name;
         this.email = email;
+        this.role = Role.SIM_USER;
+    }
+
+    public SimUser(String serial, String phoneNumber, String password, String personId, String name, int mainAccount, int countWrongCodeInput, String email, SimStatus simStatus) {
+        this(serial,phoneNumber,password,personId,name,email);
+        this.mainAccount = mainAccount;
+        this.countWrongCodeInput = countWrongCodeInput;
+        this.simStatus = simStatus;
         this.role = Role.SIM_USER;
     }
 
@@ -149,4 +159,24 @@ public class SimUser {
         sendbox.add(message);
     }
 
+    public static SimUser parseUser(String record) {
+        String[] fields = record.split(",");
+        String serial = fields[0];
+        String phoneNumber = fields[1];
+        String password = fields[2];
+        String personId = fields[3];
+        String name = fields[4];
+        int mainAccount = Integer.parseInt(fields[5]);
+        int countWrongCodeInput = Integer.parseInt(fields[6]);
+        String email = fields[7];
+        SimStatus simStatus = SimStatus.valueOf(fields[8]);
+
+        return new SimUser(serial,phoneNumber,password,personId,name,mainAccount,countWrongCodeInput,email,simStatus);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",
+                serial,phoneNumber,password,personId,name,mainAccount,countWrongCodeInput,email,simStatus);
+    }
 }

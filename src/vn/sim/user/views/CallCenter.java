@@ -65,7 +65,7 @@ public class CallCenter {
                 System.out.println("Code does not exist or used!");
                 int count = callCenterService.inputWrongCode(phoneNumber);
                 System.out.printf("\nWARNING: User %s input wrong card code %d times!",phoneNumber,count);
-                if (count == 3)
+                if (count % 3 == 0)
                     System.out.printf("\nUser %s was LOCKED! Contact STAFF to unlock and continue use SIM", phoneNumber);
             }
         } else
@@ -157,6 +157,7 @@ public class CallCenter {
                     break;
                 }
             }
+            thread.interrupt();
             end = System.currentTimeMillis();
             sec = Math.round((end - start) / 1000F);
             System.out.println("Called: " + sec + " seconds");

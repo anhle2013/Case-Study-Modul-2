@@ -8,9 +8,10 @@ public interface IStaffService {
     boolean existPhoneNumber(String phoneNumber);
     boolean existPersonId(String personId);
     boolean existEmail(String email);
-    List<SimUser> findAll();
+    List<SimUser> getAll();
     List<SimUser> findUsers(String key);
     void addUser(SimUser user);
+    void updateCSV(SimUser newUser);
     SimUser getUser(String personId);
     SimUser getUserByPhoneNumber(String phoneNumber);
     void reActiveSim(String personId);

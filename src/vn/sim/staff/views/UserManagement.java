@@ -4,13 +4,16 @@ import vn.sim.modals.SimUser;
 import vn.sim.staff.services.IStaffService;
 import vn.sim.staff.services.StaffService;
 import vn.sim.utils.AppUtils;
+import vn.sim.utils.CSVUtils;
 import vn.sim.utils.ValidateUtils;
 
 import java.util.List;
 import java.util.Scanner;
 
+
 public class UserManagement {
     IStaffService staffService = new StaffService();
+    private final static String PATH = "data/users.csv";
     Scanner scanner = new Scanner(System.in);
     String choice;
     String key;
@@ -56,7 +59,9 @@ public class UserManagement {
                         System.out.println("Person id NOT available!");
                     break;
                 case "4":
-                    displayUsers(staffService.findAll());
+                    List<SimUser> userList = staffService.getAll();
+                    CSVUtils.write(PATH, userList);
+                    displayUsers(userList);
                     break;
                 case "0":
                     System.exit(0);
@@ -142,26 +147,6 @@ public class UserManagement {
         return new SimUser(serial,phoneNumber,password,personId,name,email);
     }
 
-    public void reInputPersonId() {
-        System.out.print("Person id NOT available!");
-        do {
-            System.out.println("Do you want to re-input Person Id?");
-            System.out.println("-----------------------------------------");
-            System.out.println("Press 'y' to re-input, or 'n' to cancel");
-            key = scanner.nextLine();
-            switch (key) {
-                case "y":
-                    System.out.println("Input person id: ");
-                    personId = AppUtils.inputString();
-                    System.out.printf("\n      SEARCH BY ID: '%s' \n", personId);
-                    break;
-                case "n":
-                    return;
-                default:
-                    System.out.println("Invalid action! Please select again!");
-            }
-        } while (true);
-    }
 
     public void displayUsers(List<SimUser> users) {
         System.out.println("* * * * * * * * * * * * * * * * * * * * * * * ** * * * * * * * * * * * * * * * * * * * * * * * * *");
@@ -189,22 +174,16 @@ public class UserManagement {
         System.out.println("Promotion account: " + user.getPromotionAccount());
         System.out.println("Sim status: " + user.getStatus());
         System.out.println();
-        do {
-            System.out.println("Do you want to update any user's information?");
-            System.out.println("-----------------------------------------");
-            System.out.println("Press 'y' to Update, or 'n' to cancel");
-            key = scanner.nextLine();
-            switch (key) {
-                case "y":
-                    UpdateUserInfo updateUserInfo = new UpdateUserInfo();
-                    updateUserInfo.getUserMenu(user);
-                    break;
-                case "n":
-                    return;
-                default:
-                    System.out.println("Invalid action! Please select again!");
-            }
-        }while (true);
+
+        System.out.println("Do you want to update any user's information?");
+        System.out.println("-----------------------------------------");
+        System.out.println("Press 'yes' to Update, or anykey to cancel");
+        key = scanner.nextLine();
+        if (key.equals("yes")) {
+            UpdateUserInfo updateUserInfo = new UpdateUserInfo();
+            updateUserInfo.getUserMenu(user);
+            CSVUtils.write(PATH, staffService.getAll());
+        }
     }
 }
 

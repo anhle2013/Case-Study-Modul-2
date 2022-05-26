@@ -6,9 +6,9 @@ public class ValidateUtils {
     public static final String SERIAL_REGEX = "(\\d{3}.){3}\\d{3}";
     public static final String PHONE_NUMBER_REGEX = "0\\d{9}";
     public static final String PASSWORD_REGEX = "(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{6,}";
-    public static final String PERSON_ID_REGEX = "\\d{9}|(\\d{3})";
-    public static final String NAME_REGEX = "([A-Z][a-z]{0,7})*[A-Z][a-z]{0,7}";
-    public static final String EMAIL_REGEX = "([0-9a-z]{1,20}.)?[0-9a-z]{1,20}@(\\w{1,5}.){1,2}\\w{1,3}";
+    public static final String PERSON_ID_REGEX = "\\d{9}(\\d{3}){0,1}";
+    public static final String NAME_REGEX = "([A-Z][a-z]{0,7} ){0,}[A-Z][a-z]{0,7}";
+    public static final String EMAIL_REGEX = "([0-9a-z]{1,20}.){0,1}[0-9a-z]{1,20}@(\\w{1,5}\\.){1,2}\\w{1,3}";
 
     public static boolean isSerialValid(String serial) {
         return Pattern.compile(SERIAL_REGEX).matcher(serial).matches();
